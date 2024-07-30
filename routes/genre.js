@@ -4,19 +4,14 @@ const { Jakan } = require('jakan');
 const jakanSearch = new Jakan().withMemory(1800000).forSearch();
 const jakanMisc = new Jakan().withMemory(1800000).forMisc();
 
-let anime_genre = [];
-jakanMisc.genres('anime').then((data) => (anime_genre = data.data));
-
-let manga_genre = [];
-jakanMisc.genres('manga').then((data) => (manga_genre = data.data));
-
 /**
  * Returns all the anime genres
  */
 
-router.get('/genre/anime', (req, res) => {
+router.get('/genre/anime', async (req, res) => {
+  const anime_genre = await jakanMisc.genres('anime');
   res.render('animegenres', {
-    data: anime_genre
+    data: anime_genre.data
   });
 });
 
@@ -24,9 +19,10 @@ router.get('/genre/anime', (req, res) => {
  * Returns all the manga genres
  */
 
-router.get('/genre/manga', (req, res) => {
+router.get('/genre/manga', async (req, res) => {
+  const manga_genre = await jakanMisc.genres('manga');
   res.render('mangagenres', {
-    data: manga_genre
+    data: manga_genre.data
   });
 });
 
@@ -55,7 +51,8 @@ router.get('/genre/anime/:genre_id/:page', async (req, res) => {
     genres: genre_id,
     order_by: 'popularity'
   });
-
+  const genre_data = await jakanMisc.genres('anime');
+  const anime_genre = genre_data.data
   let genre_name = '';
   for (let i = 0; i < anime_genre.length; ++i) {
     if (anime_genre[i]['mal_id'] == genre_id) {
@@ -98,7 +95,8 @@ router.get('/genre/manga/:genre_id/:page', async (req, res) => {
     genres: genre_id,
     order_by: 'popularity'
   });
-
+  const genre_data = await jakanMisc.genres('manga');
+  const manga_genre = genre_data.data
   let genre_name = '';
   for (let i = 0; i < manga_genre.length; ++i) {
     if (manga_genre[i]['mal_id'] == genre_id) {
