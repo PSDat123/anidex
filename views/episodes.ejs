@@ -1,0 +1,41 @@
+<!---------- Episode Data ---------->
+
+<%- include("./partials/header") %>
+
+<div class="container">
+    <div class="card mb-3">
+        <h6 class="card-header text-center">List Of Episodes</h6>
+        <div class="tab-content">
+            <div class="row m-0">
+                <% data.forEach(function(epi){ %>
+                <div class="col-md-6 border-bottom p-2">
+                    <div class="pt-0 pb-1 mb-1 episode_title border-bottom d-flex align-items-center flex-nowrap strong">
+                        <%= epi["mal_id"] %>. <%= epi["title"] %> 
+                            <% if( epi["title_japanese"] != null ){ %>
+                                ( <%= epi["title_japanese"] %> )
+                            <% } %>
+                    </div>
+                    <% if( epi["title_romanji"] ) { %>
+                    <div class="text-truncate py-0 mb-1">
+                        <span class="strong">Title Romanji: </span>( <%= epi["title_romanji"] %> ) 
+                    </div>
+                    <% } %>                   
+                    <% if( epi["aired"] ) { %>
+                        <div class="text-truncate py-0 mb-1">
+                            <span class="strong">Aired On: </span><%= epi["aired"].substring(0,10) %>
+                        </div>
+                    <% } %>
+                    <div class="text-truncate py-0 mb-1">
+                        <span class="strong">Filler: </span><%= epi["filler"] %>
+                    </div>
+                    <div class="text-truncate py-0 mb-1">
+                        <span class="strong">Recap: </span><%= epi["recap"] %>
+                    </div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("./partials/footer") %>

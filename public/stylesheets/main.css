@@ -1,0 +1,283 @@
+body {
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+  padding-top: 70px;
+  padding-bottom: 10px;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.nextSeason {
+  color: black;
+}
+
+.nextSeason:hover {
+  color: black;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #dee2e6;
+}
+
+div.anime_cover {
+  width: 150px;
+  height: 255px;
+  float: left;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+a.anime_title,
+a.anime_title:hover,
+a.anime_title:focus {
+  font-weight: bold;
+}
+
+a.manga_title,
+a.manga_title:hover,
+a.manga_title:focus {
+  font-weight: bold;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.m-1 {
+  margin: 0.25rem !important;
+}
+
+.list-inline {
+  padding-left: 0;
+  list-style: none;
+}
+
+.title {
+  font-size: 0.950rem;
+}
+
+.genre {
+  color: #6c757d;
+}
+
+div.sm_anime_cover {
+  width: 80px;
+  height: 120px;
+  overflow: hidden;
+}
+
+div.sm_manga_cover {
+  width: 80px;
+  height: 120px;
+  overflow: hidden;
+}
+
+img.max-width {
+  max-width: 100%;
+}
+
+.strong {
+  font-weight: bold;
+}
+
+.score {
+  font-weight: 500;
+}
+
+.sm_recom_cover {
+  width: 160px;
+  height: 240px;
+  overflow: hidden;
+}
+
+.episode_title {
+  font-size: 0.950rem;
+  color: #337ab7;
+}
+
+.inpt-mrgn {
+  margin-right: 8px;
+}
+
+.switch-margin {
+  margin-right: 15px;
+}
+
+.form-margin {
+  margin-right: 15px;
+  flex-wrap: nowrap;
+}
+
+.auth-buttons {
+  flex-wrap: nowrap;
+}
+
+.btn-margin {
+  margin-right: 5px;
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1410px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-margin {
+    flex-wrap: wrap;
+  }
+  .select-collapse {
+    margin-bottom: 8px !important;
+  }
+  .input-collapse {
+    margin-bottom: 8px !important;
+  }
+  .btn-info {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .nav-link {
+    margin: 0;
+  }
+  .inpt-mrgn {
+    margin-right: 0;
+  }
+  .switch-margin {
+    margin-right: 0;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 8px;
+  }
+  .form-control-collapse {
+    height: 28px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-right: 0;
+    border-radius: 6px; 
+  }
+  .collapse-border {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+  }
+  .dark .collapse-border {
+    border-bottom: 1px solid rgba(37, 40, 43, 0.9);
+    border-top: 1px solid rgba(37, 40, 43, 0.9);
+  }
+  .collapse-border {
+    border-top: 1px solid rgba(230, 230, 230, 1);
+    border-bottom: 1px solid rgba(230, 230, 230, 1);
+  }
+  .btn-info {
+    height: 28px;
+    padding: 0px 0.75rem;
+    border-radius: 6px;
+    margin-left: 5px;
+    margin-right: auto;
+  }
+
+  .dark .btn-info {
+    background-color: #24292e;
+    border-color: #24292e;
+    color: #ccc;
+  }
+  .dark .btn-info:hover {
+    background-color: rgba(37, 40, 43, 0.5) !important;
+    border-color: rgba(37, 40, 43, 0.5) !important;
+  }
+  .select-collapse {
+    margin-bottom: 0px;
+  }
+  .input-collapse {
+    margin-bottom: 0px;
+  }
+  .btn-margin {
+    margin-right: 0;
+  }
+  .dark .nav-link {
+    color: #ccc !important;
+    border-bottom: 1px solid rgba(37, 40, 43, 0.9);
+  }
+  .nav-link {
+    border-bottom: 1px solid rgba(230, 230, 230, 1);
+  }
+  .dropdown-menu{ 
+    margin-right: 8px !important;
+  }
+  .dropdown-item {
+    padding: 0rem 1.5rem;
+  }
+  .navbar-brand {
+    margin-left: 8px;
+  }
+}
+
+.footer {
+  position: relative;
+  padding: 10px 0;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+}
+
+div.tiny_logo {
+  width: 40px;
+  height: 60px;
+  overflow: hidden;
+}
+
+.list-group-css {
+  border-radius: 4px;
+}
+
+div.tiny_logo_person {
+  width: 42px;
+  height: 63px;
+  overflow: hidden;
+}
+
+img:hover {
+  opacity: 0.8;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+img.opac:hover {
+  opacity: 1;
+}
+
+.nav-link:hover {
+  background-color: rgba(230, 230, 230, 1);
+  border-radius: 4px;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.2s;
+}
+
+.nav-link {
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.dropdown-item:focus {
+  color: white;
+  background-color: #17a2ba !important;
+}
+
+.dropdown-item:active {
+  color: white;
+  background-color: #17a2ba !important;
+}

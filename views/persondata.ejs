@@ -1,0 +1,144 @@
+<!-- Displays data of a anime -->
+
+<%- include("./partials/header") %>
+
+<div class="container">
+    <div class="row mt-1">
+        <div class="col-lg-12">
+            <div class="card mb-3">
+                <h6 class="card-header d-flex align-items-center">
+                    <span class="mx-1"><%= data.name %></span>
+                </h6>
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-4 col-md-5">
+                            <a href="/person/<%= data.mal_id %>">
+                                <img class="rounded opac" width="100%" src="<%= data?.images?.jpg?.image_url %>">
+                            </a>
+                        </div>
+                        <div class="col-xl-9 col-lg-8 col-md-7">
+                            <% if(data.given_name) { %>
+                            <div class="row m-0 py-1 px-0">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Given Name:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.given_name %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data.family_name) { %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Family Name:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.family_name %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data.alternate_names.length) { %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Alt Names:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <% for( var i = 0; i < data["alternate_names"].length; i++) { %>
+                                        <%= data.alternate_names[i] %>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data.birthday) { %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Birthday:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.birthday.substring(0,10) %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data.website_url) { %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Website:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <a href=<%= data.website_url %>><%= data.website_url %></a>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data.about) { %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    More:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.about.replace(/\n/g, '') %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data.voices.length) { %>
+                            <div class="row m-0 py-1 px-0 border-top text-center card-header border-left">
+                                <div class="col-lg-12 col-xl-12">
+                                    <span class="strong">Voice Acting Roles</span>
+                                </div>
+                            </div>
+                            <% data.voices.forEach(function(role) { %>
+                            <div class="row m-0 py-1 px-0 border-top border-left">
+                                <div class="col-lg-6 col-xl-6 col-sm-6 col-6">
+                                    <div class="hover tiny_logo_person rounded float-left mr-2">
+                                        <a href="/anime/<%= role.anime.mal_id %>"><img class="rounded max-width" src=<%= role.anime?.images?.webp?.large_image_url %>></a>
+                                    </div>
+                                    <div class="text-truncate pt-0 pb-1 mb-1">
+                                        <a class="manga_title text-truncate" href="/anime/<%= role.anime.mal_id %>"><%= role.anime.title %></a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-xl-6 col-sm-6 col-6">
+                                    <div class="hover tiny_logo_person rounded float-left mr-2">
+                                        <a href="/character/<%= role.character.mal_id %>"><img class="rounded max-width" src=<%= role.character?.images?.jpg?.image_url %>></a>
+                                    </div>
+                                    <div class="text-truncate pt-0 pb-1 mb-1">
+                                        <a class="manga_title text-truncate" href="/character/<%= role.anime.mal_id %>"><%= role.character.name %></a>
+                                        <p class="text-truncate py-0 mb-1">
+                                            <span style="font-size: 0.8rem;"><%= role.role %></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                            <% } %>
+                            <% if(data.anime.length) { %>
+
+                            <div class="row m-0 py-1 px-0 border-top text-center card-header border-left">
+                                <div class="col-lg-12 col-xl-12">
+                                    <span class="strong">Anime Staff Positions</span>
+                                </div>
+                            </div>
+                            <% data.anime.forEach(function(position) { %>
+                                <div class="row m-0 py-1 px-0 border-top border-left">
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="hover tiny_logo_person rounded float-left mr-2">
+                                            <a href="/anime/<%= position.anime.mal_id %>"><img class="rounded max-width" src=<%= position.anime?.images?.webp?.large_image_url %> ></a>
+                                        </div>
+                                        <div class="text-truncate pt-0 pb-1 mb-1">
+                                            <a class="manga_title text-truncate" href="/anime/<%= position.anime.mal_id %>"><%= position.anime.name %></a>
+                                            <p class="text-truncate py-0 mb-1">
+                                                <span style="font-size: 0.8rem;"><%= position.position %></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<%- include("./partials/footer") %>

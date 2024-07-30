@@ -1,0 +1,63 @@
+<%- include("./partials/header") %>
+
+<div class="container">
+    <div class="card mb-3">
+        <h6 class="card-header text-center">Top Manga Of All Time</h6>
+        <div class="tab-content">
+            <div class="row m-0">
+                <% data.forEach(function(manga, index){ %>
+                <div class="col-md-4 border-bottom p-2">
+                    <div class="hover sm_manga_cover rounded float-left mr-2">
+                        <a href="/manga/<%= manga["mal_id"] %>">
+                            <img class="rounded max-width" src="<%= manga.images.webp.large_image_url %>">
+                        </a>
+                    </div>
+                    <div class="pt-0 pb-1 mb-1 title border-bottom d-flex align-items-center flex-nowrap">
+                        <a class="manga_title text-truncate " href="/manga/<%= manga["mal_id"] %>"><%= (page - 1) * limit + index + 1 %>. <%= manga["title"] %></a>
+                    </div>
+                    <div class="text-truncate py-0 mb-1">
+                        <span class="text-info">Score (<%= manga["score"] %>)</span>
+                    </div>
+                    <div class="py-0 mb-1 row no-gutters align-items-center flex-nowrap">
+                        <%= manga["type"] %> 
+                        <% if( manga["volumes"] != null) { %>
+                            (<%= manga["volumes"] %> Volumes)
+                        <% } else { %>
+                            (? Volumes)
+                        <% } %>
+                    </div>
+                    <div class="text-truncate py-0 mb-1">
+                        <%= manga?.published?.string %>
+                    </div>
+                    <div class="text-truncate py-0 mb-1">
+                        <%= manga["members"] %> Members
+                    </div>                    
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <%if(page==1){%>
+                <% for(var i=parseInt(page);i<parseInt(page)+7 && i <= last_visible_page;i++){%>
+                    <li class="page-item" style="margin-right: 0;">
+                        <a class="page-link" href="/top/manga/<%=i%>">
+                            <%=i%>
+                        </a>
+                    </li
+                <%}%>
+            <%} else if(page>1){%>
+                <% for(var i=parseInt(page)-1;i<parseInt(page)+6 && i <= last_visible_page ;i++){%>
+                    <li class="page-item" style="margin-left: 0;">
+                        <a class="page-link" href="/top/manga/<%=i%>">
+                            <%=i%>
+                        </a>
+                    </li>
+                <%}%>
+            <%}%>
+        </ul>
+    </nav>
+</div>
+
+<%- include("./partials/footer") %>

@@ -1,0 +1,68 @@
+<!-- --------Search Results-------- -->
+
+<%- include("./partials/header") %>
+
+<div class="container">
+    <h3 style="text-align: center;">Search Results</h3>
+    <hr>
+    <div class="row mt-1 mx-0">
+        <% data.forEach(function(anime){ %>
+        <div class="class anime-entry col-lg-6 border-bottom pl-0 my-1">
+            <div class="rounded anime_cover mr-2">
+                <% if ("family_name" in anime) { %>
+                <a href="/person/<%= anime["mal_id"] %>">
+                    <img src="<%= anime?.images?.jpg?.image_url %>" width="100%" alt="anime-cover">
+                </a>
+                <% } else {%> 
+                <% if( anime["type"] == 'TV' || anime["type"] == 'Movie' || anime["type"] == 'Music' || anime["type"] == 'ONA' || anime["type"] == 'OVA' ){ %>
+                <a href="/anime/<%= anime["mal_id"] %>">
+                    <img src="<%= anime?.images?.webp?.large_image_url %>" width="100%" alt="anime-cover">
+                </a>
+                <% } else { %>
+                <a href="/manga/<%= anime["mal_id"] %>">
+                    <img src="<%= anime?.images?.webp?.large_image_url %>" width="100%" alt="anime-cover">
+                </a>
+                <% } } %>
+            </div>
+            <div class="text-truncate title mb-1 d-flex flex-nowrap align-items-center">
+                <% if ("family_name" in anime) { %>
+                <a class="ml-1 anime_title text-truncate" href="/person/<%= anime["mal_id"] %>"><%= anime["name"] %></a>
+                <% } else {%> 
+                <% if( anime["type"] == 'TV' || anime["type"] == 'Movie' || anime["type"] == 'Music' || anime["type"] == 'ONA' || anime["type"] == 'OVA' || anime["type"] == 'Special'){ %>
+                <a class="ml-1 anime_title text-truncate" href="/anime/<%= anime["mal_id"] %>"><%= anime["title"] %></a>
+                <% } else { %>
+                <a class="ml-1 anime_title text-truncate" href="/manga/<%= anime["mal_id"] %>"><%= anime["title"] %></a>
+                <% } }%>
+            </div>
+            <ul class="list-inline m-1">
+                <% if ("family_name" in anime) { %>
+                <li class="list-inline-item text-primary">Favorites: <span><%= anime["favorites"] %></span></li>
+                <% if (anime["birthday"]) { %>
+                <li class="list-inline-item text-success">Birthday: <%= anime["birthday"].substring(0,10) %></li>
+                <% } } else {%> 
+                <% if( anime["score"] ){ %>
+                <li class="list-inline-item text-primary">Score (<span><%= anime["score"] %></span>)</li>
+                <% } %>
+                <li class="list-inline-item text-success">Type: <%= anime["type"] %></li>
+                <li class="list-inline-item text-info">Members: <%= anime["members"] %></li>
+                <% } %>
+            </ul>
+            <div style="height: 210px; overflow: hidden;">
+                <% if ("family_name" in anime) { %>
+                    <%= anime["about"] %>
+                <% } else {%>
+                <%= anime["synopsis"] %>
+                <br>
+                <% if( anime["type"] == 'TV' || anime["type"] == 'Movie' || anime["type"] == 'Music' || anime["type"] == 'ONA' || anime["type"] == 'OVA' || anime["type"] == 'Special'){ %>
+                    <span class="text-info"><em>Aired: <%= anime?.aired?.string %></em></span>
+                <% } else { %>
+                    <span class="text-info"><em>Published: <%= anime?.published?.string %></em></span>
+                <% } %>
+                <%  } %>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</div>
+
+<%- include("./partials/footer") %>

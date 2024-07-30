@@ -1,0 +1,16 @@
+<%- include("./partials/header") %>
+<div class="container">
+<h2 class="mt-3">Anime Genres</h2>
+<hr>
+
+<div class="row">
+    <% data.forEach(function(genre) {%>
+    <div class="col-lg-2 col-md-4 col-sm-6 mt-2 mb-2" style="text-align: center;">
+        <ul class="list-group">
+            <a href="/genre/anime/<%= genre.mal_id %>" class="list-group-item list-group-item-action"><%= genre.name %></a>
+        </ul>
+    </div>
+    <% }) %>
+</div>
+
+<%- include("./partials/footer") %>

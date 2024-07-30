@@ -1,0 +1,76 @@
+<%- include("./partials/header") %>
+
+<div class="container">
+    <h3><%= season.charAt(0).toUpperCase() + season.substring(1) %>  <%= year %> Season</h3>
+    <hr>
+    <div class="row mt-1 mx-0">
+        <% data.forEach(function(season){ %>
+            <div class="class anime-entry col-lg-6 border-bottom pl-0 my-1">
+            <div class="rounded anime_cover mr-2">
+                <a href="/anime/<%= season["mal_id"] %>">
+                    <img src="<%= season.images.webp.large_image_url %>" width="100%" alt="anime-cover">
+                </a>
+            </div>
+            <div class="text-truncate title mb-1 d-flex flex-nowrap align-items-center">
+                <a class="ml-1 anime_title text-truncate" href="/anime/<%= season["mal_id"] %>"><%= season["title"] %></a>
+            </div>
+            <div>
+                <% if( season.genres != null ){ %>
+                    <% for( var j = 0; j < season.genres.length; j++) { %>
+                        <a href="/genre/<%= season.genres[j]["mal_id"] %>" class="badge badge-light genre"><%= season.genres[j]["name"] %></a>
+                    <% } %>
+                <% } %>
+            </div>
+            <ul class="list-inline m-1">
+                <% if( season["score"] != null && season["score"] != '0' ){ %>
+                    <li class="list-inline-item text-primary">Score (<span><%= season["score"] %></span>)</li>
+                    <% } else { %>
+                    <li class="list-inline-item text-primary">Score (-)</li>
+                    <% } %>
+                    <% season.producers.forEach(function(studio){ %>
+                    <li class="list-inline-item text-success"><%= studio["name"] %></li>
+                    <% }) %>
+                    <li class="list-inline-item text-secondary">Source: <%= season["source"] %> 
+                        <% if( season["episodes"] != null){ %>
+                            | <%= season["episodes"] %> Eps
+                        <% } else { %>
+                            | ? Eps
+                        <% } %>
+                    </li>
+            </ul>
+            <div style="height: 210px; overflow: hidden;">
+                <% if(season?.synopsis){ %>
+                <%= season?.synopsis?.substring(0,400) %>...
+                <% } %>
+                <br>
+                <% if( season?.aired?.string && season.type){ %>
+                    <span class="text-info"><em><%= season.type %> - <%= season.aired.string %></em></span>
+                <% } %>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+        <nav>
+        <ul class="pagination justify-content-center">
+            <%if(page==1){%>
+                <% for(var i=parseInt(page);i<parseInt(page)+7 && i <= last_visible_page;i++){%>
+                    <li class="page-item" style="margin-right: 0;">
+                        <a class="page-link" href="/season/<%= year %>/<%= season %>/<%=i%>">
+                            <%=i%>
+                        </a>
+                    </li
+                <%}%>
+            <%} else if(page>1){%>
+                <% for(var i=parseInt(page)-1;i<parseInt(page)+6 && i <= last_visible_page ;i++){%>
+                    <li class="page-item" style="margin-left: 0;">
+                        <a class="page-link" href="/season/<%= year %>/<%= season %>/<%=i%>">
+                            <%=i%>
+                        </a>
+                    </li>
+                <%}%>
+            <%}%>
+        </ul>
+    </nav>
+</div>
+
+<%- include("./partials/footer") %>

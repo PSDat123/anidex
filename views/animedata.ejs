@@ -1,0 +1,402 @@
+<!-- Displays data of a person -->
+
+<%- include("./partials/header") %>
+
+<div class="container">
+    <div class="row mt-1">
+        <div class="col-lg-12">
+            <div class="card mb-3">
+                <h6 class="card-header d-flex align-items-center">
+                    <span class="mx-1"><%= data.title %></span>
+                </h6>
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-4 col-md-5 col-12">
+                            <a href="/anime/<%= data.mal_id %>">
+                                <img class="rounded opac" width="100%" src="<%= data.images.webp.large_image_url %>">
+                            </a>
+                        </div>
+                        <div class="col-xl-9 col-lg-8 col-md-7 col-12">
+                            <div class="row m-0 py-1 px-0">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Type:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.type %>
+                                </div>
+                            </div>
+                            <% if( data.title_synonyms.length != 0){ %>            
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Alt Name(s):
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <% data["title_synonyms"].forEach(function(title) { %>
+                                        <%= title %>
+                                    <% }) %>  
+                                </div>
+                            </div>
+                            <% } %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Score:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.score %>
+                                </div>
+                            </div>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Source:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.source %>
+                                </div>
+                            </div>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Status:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.status %>
+                                </div>
+                            </div>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Aired:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.aired.string %>
+                                </div>
+                            </div>
+                            <% if( typeof data["genres"] != 'undefined'){ %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Genres:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <% for( var i = 0; i < data["genres"].length; i++) { %>
+                                        <a href="/genre/anime/<%= data.genres[i]["mal_id"] %>" class="badge badge-light genre"><%= data.genres[i]["name"] %></a>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Synopsis:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.synopsis %>
+                                </div>
+                            </div>
+                            <% if( data["type"] === 'TV' && typeof data.episodes != 'undefined' && data.episodes != null){ %>            
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Episodes:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.episodes %> | <a href="/anime/<%= data.mal_id %>/episodes">List Of Episodes</a>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data["background"]){ %>
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Background:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <%= data.background %>
+                                </div>
+                            </div>
+                            <% } %>
+                            <% if(data["studios"]){ %>
+                                <div class="row m-0 py-1 px-0 border-top">
+                                    <div class="col-lg-4 col-xl-2 strong">
+                                        Studio(s):
+                                    </div>
+                                    <div class="col-lg-8 col-xl-10">
+                                        <% data["studios"].forEach(function(studio){ %>    
+                                            <%= studio.name %>
+                                        <% }) %>                               
+                                    </div>
+                                </div>
+                            <% } %>
+                            <% if(data?.relations?.length) { %>
+                                <% data.relations.forEach(obj => { %>
+                                    <% if(obj["relation"] == 'Adaptation'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Adaptation:
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% for( var i = 0; i < obj["entry"].length; i++) { %>
+                                                <% if( i != obj["entry"].length - 1) { %>
+                                                    <a href="/manga/<%= obj["entry"][i]["mal_id"] %>"><%= obj["entry"][i]["name"] + ','  %></a>
+                                                <% } else { %>
+                                                    <a href="/manga/<%= obj["entry"][i]["mal_id"] %>"><%= obj["entry"][i]["name"] %></a>
+                                                <% } %>
+                                            <% } %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% if(obj["relation"] == 'Prequel'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Prequel:
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% obj["entry"].forEach(function(prequel) { %>
+                                                <a href="/anime/<%= prequel["mal_id"] %>"> <%= prequel["name"] %> </a>
+                                            <% }) %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% if(obj["relation"] == 'Sequel'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Sequel:
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% obj["entry"].forEach(function(sequel) { %>
+                                                <a href="/anime/<%= sequel["mal_id"] %>"> <%= sequel["name"] %> </a>
+                                            <% }) %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% if(obj["relation"] == 'Parent story'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Parent Story:
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% obj["entry"].forEach(function(story) { %>
+                                                <a href="/anime/<%= story["mal_id"] %>"><%= story["name"] %></a><br>
+                                            <% }) %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% if(obj["relation"] == 'Side story'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Side Story:
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% obj["entry"].forEach(function(story) { %>
+                                                <a href="/anime/<%= story["mal_id"] %>"><%= story["name"] %></a><br>
+                                            <% }) %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% if(obj["relation"] == 'Alternative version'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Alternative Version(s):
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% obj["entry"].forEach(function(story) { %>
+                                                <a href="/anime/<%= story["mal_id"] %>"><%= story["name"] %></a><br>
+                                            <% }) %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% if(obj["relation"] == 'Spin-off'){ %>
+                                    <div class="row m-0 py-1 px-0 border-top">
+                                        <div class="col-lg-4 col-xl-2 strong">
+                                            Spin Off(s):
+                                        </div>
+                                        <div class="col-lg-8 col-xl-10">
+                                            <% obj["entry"].forEach(function(story) { %>
+                                                <a href="/anime/<%= story["mal_id"] %>"><%= story["name"] %></a><br>
+                                            <% }) %>                                
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                <% });%>
+                            <% } %>
+
+                            <div class="row m-0 py-1 px-0 border-top">
+                                <div class="col-lg-4 col-xl-2 strong">
+                                    Recommendations:
+                                </div>
+                                <div class="col-lg-8 col-xl-10">
+                                    <a href="/anime/<%= data.mal_id %>/recommendations">If you like this then you may like these</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-12">
+            <div class="card mb-3">
+                <h6 class="card-header text-center">Information & Statistics</h6>
+                <div class="tab-content">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Score:
+                                </div>
+                                <div class="col-8">
+                                    <%= data.score %> (Scored by <%= data.scored_by %> users)
+                                </div>
+                            </div>
+                        </li>
+                        <% if(data?.season && data?.year) { %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Premiered:
+                                </div>
+                                <div class="col-8">
+                                    <%= data.season.charAt(0).toUpperCase() + data.season.substring(1) %> <%= data.year %>
+                                </div>
+                            </div>
+                        </li>
+                        <% } %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Ranked:
+                                </div>
+                                <div class="col-8">
+                                    #<%= data.rank %>
+                                </div>
+                            </div>
+                        </li>
+                        <% if (data?.broadcast?.string) { %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Broadcast:
+                                </div>
+                                <div class="col-8">
+                                    <%= data.broadcast.string %>
+                                </div>
+                            </div>
+                        </li>
+                        <% } %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Popularity:
+                                </div>
+                                <div class="col-8">
+                                    #<%= data.popularity %>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Members:
+                                </div>
+                                <div class="col-8">
+                                    <%= data.members %>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Duration:
+                                </div>
+                                <div class="col-8">
+                                    <%= data.duration %>
+                                </div>
+                            </div>
+                        </li>
+                        <% if( typeof data["producers"] != 'undefined' && data["producers"].length != 0){ %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Producers:
+                                </div>
+                                <div class="col-8">
+                                    <% for( var i = 0; i < data["producers"].length; i++) { %>
+                                        <% if( i != data["producers"].length - 1) { %>
+                                            <%= data["producers"][i]["name"] + ','  %>
+                                        <% } else { %>
+                                            <%= data["producers"][i]["name"] %>
+                                        <% } %>
+                                    <% } %> 
+                                </div>
+                            </div>
+                        </li>
+                        <% } %>
+                        <% if( typeof data["licensors"] != 'undefined' && data["licensors"].length != 0){ %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Licensors:
+                                </div>
+                                <div class="col-8">
+                                    <% for( var i = 0; i < data["licensors"].length; i++) { %>
+                                        <% if( i != data["licensors"].length - 1) { %>
+                                            <%= data["licensors"][i]["name"] + ','  %>
+                                        <% } else { %>
+                                            <%= data["licensors"][i]["name"] %>
+                                        <% } %>
+                                    <% } %> 
+                                </div>
+                            </div>
+                        </li>
+                        <% } %>
+                        <li class="list-group-item px-2 py-1">
+                            <div class="row">
+                                <div class="col-4 strong">
+                                    Rating:
+                                </div>
+                                <div class="col-8">
+                                    <%= data.rating %>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-12">
+            <% if( typeof data["opening_themes"] != 'undefined' && data.opening_themes != null && data.opening_themes.length != 0){ %>
+            <div class="card mb-3">
+                <h6 class="card-header text-center">Openings</h6>
+                <div class="tab-content">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-2 py-1">
+                            <% for( var j = 0; j< data.opening_themes.length; j++){ %>
+                            <div>
+                                #<%= (j+1) %>: <%= data.opening_themes[j] %>
+                            </div>
+                            <% } %>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <div class="col-lg-4 col-md-12">
+            <% if( typeof data["ending_themes"] != 'undefined' && data.ending_themes != null && data.ending_themes.length != 0){ %>
+            <div class="card mb-3">
+                <h6 class="card-header text-center">Endings</h6>
+                <div class="tab-content">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-2 py-1">
+                            <% for( var j = 0; j< data.ending_themes.length; j++){ %>
+                            <div>
+                                #<%= (j+1) %>: <%= data.ending_themes[j] %>
+                            </div>
+                            <% } %>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include("./partials/footer") %>

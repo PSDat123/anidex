@@ -1,0 +1,76 @@
+<%- include("./partials/header") %>
+
+<div class="container">
+    <h3><%= weekday.charAt(0).toUpperCase() + weekday.substring(1) %></h3>
+    <hr>
+    <div class="row mt-1 mx-0">
+        <% data.forEach(function(day) { %>
+            <div class="class anime-entry col-lg-6 border-bottom pl-0 my-1">
+            <div class="rounded anime_cover mr-2">
+                <a href="/anime/<%= day["mal_id"] %>">
+                    <img src="<%= day.images.webp.large_image_url %>" width="100%" alt="anime-cover">
+                </a>
+            </div>
+            <div class="text-truncate title mb-1 d-flex flex-nowrap align-items-center">
+                <a class="ml-1 anime_title text-truncate" href="/anime/<%= day["mal_id"] %>"><%= day["title"] %></a>
+            </div>
+            <div>
+                <% if( day.genres != null ){ %>
+                    <% for( var j = 0; j < day.genres.length; j++) { %>
+                        <a href="/genre/<%= day.genres[j]["mal_id"] %>" class="badge badge-light genre"><%= day.genres[j]["name"] %></a>
+                    <% } %>
+                <% } %>
+            </div>
+            <ul class="list-inline m-1">
+                <% if( day["score"] != null && day["score"] != '0' ){ %>
+                    <li class="list-inline-item text-primary">Score (<span><%= day["score"] %></span>)</li>
+                <% } else { %>
+                    <li class="list-inline-item text-primary">Score (-)</li>
+                <% } %>
+                <% day.producers.forEach(function(studio){ %>
+                <li class="list-inline-item text-success"><%= studio["name"] %></li>
+                <% }) %>
+                <li class="list-inline-item text-secondary">Source: <%= day["source"] %> 
+                    <% if( day["episodes"] ){ %>
+                        | <%= day["episodes"] %> Eps
+                    <% } else { %>
+                        | ? Eps
+                    <% } %>
+                </li>
+            </ul>
+            <div style="height: 210px; overflow: hidden;">
+                <% if (day?.synopsis ) { %>
+                <%= day["synopsis"].substring(0,400) %>...
+                <% } %>
+                <br>
+                <% if( day?.aired?.string && day.type){ %>
+                    <span class="text-info"><em><%= day.type %> - <%= day?.aired?.string %></em></span>
+                <% } %>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <%if(page==1){%>
+                <% for(var i=parseInt(page);i<parseInt(page)+7 && i <= last_visible_page;i++){%>
+                    <li class="page-item" style="margin-right: 0;">
+                        <a class="page-link" href="/schedule/<%=i%>">
+                            <%=i%>
+                        </a>
+                    </li
+                <%}%>
+            <%} else if(page>1){%>
+                <% for(var i=parseInt(page)-1;i<parseInt(page)+6 && i <= last_visible_page ;i++){%>
+                    <li class="page-item" style="margin-left: 0;">
+                        <a class="page-link" href="/schedule/<%=i%>">
+                            <%=i%>
+                        </a>
+                    </li>
+                <%}%>
+            <%}%>
+        </ul>
+    </nav>
+</div>
+
+<%- include("./partials/footer") %>
