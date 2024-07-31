@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Jakan } = require('jakan');
-const jakanSearch = new Jakan().withMemory(1800000).forSearch();
+const jakanSearch = new Jakan()
+  .withMemory(parseInt(process.env.CACHE_TTL) * 1000 || 21600000)
+  .forSearch();
 /**
  * Returns anime of a specified genre
  *

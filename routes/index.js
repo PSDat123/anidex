@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const NodeCache = require('node-cache');
-const myCache = new NodeCache({ stdTTL: 1800, checkperiod: 600 });
+const myCache = new NodeCache({
+  stdTTL: parseInt(process.env.CACHE_TTL) || 21600,
+  checkperiod: 6000
+});
 const { Jakan } = require('jakan');
-const jakanMisc = new Jakan().withMemory(1800000).forMisc();
+const jakanMisc = new Jakan()
+  .withMemory(parseInt(process.env.CACHE_TTL) * 1000 || 21600000)
+  .forMisc();
 
 const getSeason = (d) => Math.floor((d.getMonth() / 12) * 4) % 4;
 
@@ -42,32 +47,28 @@ router.get('/index', async function (req, res) {
       next_season_s
     });
   } else {
-    try {
-      const [data1, data2, data3, data4] = await Promise.all([
-        jakanMisc.season(year, season_s),
-        jakanMisc.top('anime'),
-        jakanMisc.top('anime', { filter: 'airing' }),
-        jakanMisc.top('anime', { filter: 'upcoming' })
-      ]);
-      myCache.mset([
-        { key: 'currentSeason', val: data1 },
-        { key: 'topAnime', val: data2 },
-        { key: 'topAnimeAiring', val: data3 },
-        { key: 'topAnimeUpcoming', val: data4 }
-      ]);
-      res.render('index', {
-        data1,
-        data2,
-        data3,
-        data4,
-        year,
-        season_s,
-        next_year,
-        next_season_s
-      });
-    } catch (error) {
-      res.redirect('/500');
-    }
+    const [data1, data2, data3, data4] = await Promise.all([
+      jakanMisc.season(year, season_s, { limit: 10 }),
+      jakanMisc.top('anime', { limit: 5 }),
+      jakanMisc.top('anime', { filter: 'airing', limit: 5 }),
+      jakanMisc.top('anime', { filter: 'upcoming', limit: 5 })
+    ]);
+    myCache.mset([
+      { key: 'currentSeason', val: data1 },
+      { key: 'topAnime', val: data2 },
+      { key: 'topAnimeAiring', val: data3 },
+      { key: 'topAnimeUpcoming', val: data4 }
+    ]);
+    res.render('index', {
+      data1,
+      data2,
+      data3,
+      data4,
+      year,
+      season_s,
+      next_year,
+      next_season_s
+    });
   }
 });
 

@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { Jakan } = require('jakan');
-const jakanUsers = new Jakan().withMemory(1800000).forUsers();
+const jakanUsers = new Jakan()
+  .withMemory(parseInt(process.env.CACHE_TTL) * 1000 || 21600000)
+  .forUsers();
+
 /**
  * Returns the MAL profile of the current user
  *

@@ -1,8 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const NodeCache = require('node-cache');
+const myCache = new NodeCache({
+  stdTTL: parseInt(process.env.CACHE_TTL) || 21600,
+  checkperiod: 6000
+});
 const { Jakan } = require('jakan');
-const jakanSearch = new Jakan().withMemory(1800000).forSearch();
-const jakanMisc = new Jakan().withMemory(1800000).forMisc();
+const jakanSearch = new Jakan()
+  .withMemory(parseInt(process.env.CACHE_TTL) * 1000 || 21600000)
+  .forSearch();
+const jakanMisc = new Jakan()
+  .withMemory(parseInt(process.env.CACHE_TTL) * 1000 || 21600000)
+  .forMisc();
 
 /**
  * Returns top anime of all time
@@ -13,7 +22,13 @@ const jakanMisc = new Jakan().withMemory(1800000).forMisc();
 router.get('/top/anime/:page', async (req, res) => {
   const limit = 24;
   const page = req.params.page;
-  const data = await jakanMisc.top('anime', { limit, page });
+  let data;
+  if (myCache.has(`topAnime${page}`)) {
+    data = myCache.get(`topAnime${page}`);
+  } else {
+    data = await jakanMisc.top('anime', { limit, page });
+    myCache.set(`topAnime${page}`, data);
+  }
   res.render('topanime', {
     data: data.data,
     page,
@@ -39,7 +54,13 @@ router.get('/top/anime/', (req, res) => {
 router.get('/top/manga/:page', async (req, res) => {
   const limit = 24;
   const page = req.params.page;
-  const data = await jakanMisc.top('manga', { limit, page });
+  let data;
+  if (myCache.has(`topManga${page}`)) {
+    data = myCache.get(`topManga${page}`);
+  } else {
+    data = await jakanMisc.top('manga', { limit, page });
+    myCache.set(`topManga${page}`, data);
+  }
   res.render('topmanga', {
     data: data.data,
     page,
@@ -121,7 +142,14 @@ router.get('/schedule/:page', async (req, res) => {
     'saturday'
   ][new Date().getDay()];
   const page = req.params.page;
-  const data = await jakanMisc.schedules({ filter: weekday, page });
+  let data;
+  if (myCache.has(`schedule_${weekday}_${page}`)) {
+    data = myCache.get(`schedule_${weekday}_${page}`);
+  } else {
+    data = await jakanMisc.schedules({ filter: weekday, page });
+    myCache.set(`schedule_${weekday}_${page}`, data);
+  }
+
   res.render('schedule', {
     data: data.data,
     weekday,
@@ -138,7 +166,13 @@ router.get('/schedule/:page', async (req, res) => {
 
 router.get('/anime/:mal_id/recommendations', async (req, res) => {
   const mal_id = req.params.mal_id;
-  const data = await jakanSearch.anime(parseInt(mal_id), 'recommendations');
+  let data;
+  if (myCache.has(`anime_${mal_id}_recommendations`)) {
+    data = myCache.get(`anime_${mal_id}_recommendations`);
+  } else {
+    data = await jakanSearch.anime(parseInt(mal_id), 'recommendations');
+    myCache.set(`anime_${mal_id}_recommendations`, data);
+  }
   res.render('animerecommendations', {
     data: data.data
   });
@@ -152,7 +186,13 @@ router.get('/anime/:mal_id/recommendations', async (req, res) => {
 
 router.get('/manga/:mal_id/recommendations', async (req, res) => {
   const mal_id = req.params.mal_id;
-  const data = await jakanSearch.manga(parseInt(mal_id), 'recommendations');
+  let data;
+  if (myCache.has(`manga_${mal_id}_recommendations`)) {
+    data = myCache.get(`manga_${mal_id}_recommendations`);
+  } else {
+    data = await jakanSearch.manga(parseInt(mal_id), 'recommendations');
+    myCache.set(`manga_${mal_id}_recommendations`, data);
+  }
   res.render('mangarecommendations', {
     data: data.data
   });
@@ -167,7 +207,13 @@ router.get('/manga/:mal_id/recommendations', async (req, res) => {
 
 router.get('/anime/:mal_id/episodes', async (req, res) => {
   const mal_id = req.params.mal_id;
-  const data = await jakanSearch.anime(parseInt(mal_id), 'episodes');
+  let data;
+  if (myCache.has(`anime_${mal_id}_episodes`)) {
+    data = myCache.get(`anime_${mal_id}_episodes`);
+  } else {
+    data = await jakanSearch.anime(parseInt(mal_id), 'episodes');
+    myCache.set(`anime_${mal_id}_episodes`, data);
+  }
   res.render('episodes', {
     data: data.data,
     mal_id: mal_id
